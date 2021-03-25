@@ -29,6 +29,7 @@ DEBUG = config("DEBUG")
 
 ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = "user.CustomUser"
 
 # Application definition
 
@@ -146,7 +147,7 @@ AWS_LOCATION = 'static'
 MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'book_store/static')
+    os.path.join(BASE_DIR, 'static')
 ]
 
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
