@@ -151,3 +151,33 @@ class UserProfileView(ModelViewSet):
                 return Response({"error": "failed to upload profile picture"}, status=400)
         
         return Response(serializer.data, status=200)
+
+
+class MeView(APIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = (IsAuthenticatedCustom, )
+
+    def get(self, request):
+        data = {}
+
+        try:
+            data = self.serializer_class(request.user.user_profile).data
+        except Exception:
+            data = {
+                'user': {
+                    'id': request.user.id
+                }
+            }
+            
+        return Response(data, status=200)
+
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticatedCustom,)
+
+    def get(self, request):
+        user_id = request.user.id
+
+        JWT.objects.filter(user_id=user_id).delete()
+
+        return Response("logged out successfully", status=200)

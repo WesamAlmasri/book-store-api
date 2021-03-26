@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import LoginView, RegisterView, RefreshView, FileUploadView, UserProfileView
+from .views import LoginView, RegisterView, RefreshView, FileUploadView, UserProfileView, MeView, LogoutView
 
 from rest_framework.routers import DefaultRouter
 
@@ -14,4 +14,6 @@ urlpatterns = [
     path('login', LoginView.as_view()),
     path('register', RegisterView.as_view()),
     path('refresh', RefreshView.as_view()),
+    path('me', MeView.as_view()),
+    path('logout', LogoutView.as_view()),
 ]
