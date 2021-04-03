@@ -64,4 +64,52 @@ class TestAuth(APITestCase):
     register_url = '/user/register'
     refresh_url = '/user/refresh'
 
+    def test_register(self):
+        data = {
+            'username': 'wesam',
+            'email': 'wesam@gmail.com',
+            'password': 'mypass',
+        }
+
+        response = self.client.post(self.register_url, data=data)
+        result = response.json()
+
+        self.assertEqual(response.status_code, 201)
     
+    def test_login(self):
+        data = {
+            'username': 'wesam',
+            'email': 'wesam@gmail.com',
+            'password': 'mypass',
+        }
+
+        self.client.post(self.register_url, data=data)
+
+        response = self.client.post(self.login_url, data=data)
+        result = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(result['access'])
+        self.assertTrue(result['refresh'])
+    
+    def test_refresh(self):
+        data = {
+            'username': 'wesam',
+            'email': 'wesam@gmail.com',
+            'password': 'mypass',
+        }
+
+        self.client.post(self.register_url, data=data)
+
+        response = self.client.post(self.login_url, data=data)
+        refresh = response.json()['refresh']
+
+        response = self.client.post(self.refresh_url, data={'refresh': refresh})
+        result = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(result['access'])
+        self.assertTrue(result['refresh'])
+    
+
+        
