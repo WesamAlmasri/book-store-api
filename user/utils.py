@@ -32,5 +32,7 @@ class JWTToken:
                 return CustomUser.objects.get(id=decoded['user_id'])
             except Exception:
                 return None
+        
+        return None
 
         
