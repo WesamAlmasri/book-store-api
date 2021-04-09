@@ -2,11 +2,8 @@ from rest_framework import serializers
 from .models import Category, Auther, Book, BookImage, BookComment
 from user.serializers import CustomUserSerializer, UserProfileSerializer, FileUploadSerializer
 
-class CategorySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Category
-        fields = ('name',)
+class CategorySerializer(serializers.Serializer):
+    name = serializers.CharField()
 
 class AutherSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer(read_only=True)

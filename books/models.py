@@ -45,7 +45,7 @@ class BookImage(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.book.auther.name} - {self.book.name} - {self.image}"
+        return f"{self.book.auther.name} - {self.book.title} - {self.image}"
 
 class BookComment(models.Model):
     book = models.ForeignKey(Book, related_name='book_comments', on_delete=models.CASCADE)
