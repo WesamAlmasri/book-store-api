@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView, Response
 from rest_framework.viewsets import ModelViewSet
-from .models import Category
+from .models import Category, Auther
 from .serializers import CategorySerializer, AutherSerializer, BookSerializer, BookImageSerializer, BookCommentSerializer
+from user.utils import get_query
 
 class CategoryView(APIView):
     serializer_class = CategorySerializer
@@ -12,3 +13,10 @@ class CategoryView(APIView):
         data = self.serializer_class(categories, many=True).data
         
         return Response(data, 200)
+
+class AutherView(ModelViewSet):
+    queryset = Auther.objects.all()
+    serializer_class = AutherSerializer
+
+
+    

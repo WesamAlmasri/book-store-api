@@ -8,8 +8,8 @@ from .serializers import LoginSerializer, RegisterSerializer, RefreshSerializer,
 from django.contrib.auth import authenticate
 from .authentication import Authentication
 from django.db.models import Q
-import re
 from book_store.custom_methods import IsAuthenticatedCustom
+from .utils import get_query
 
 
 class LoginView(APIView):
@@ -94,7 +94,7 @@ class UserProfileView(ModelViewSet):
 
         if keyword:
             search_fields = ('user__username', 'user__email', 'first_name', 'last_name')
-            query = self.get_query(keyword, search_fields)
+            query = get_query(keyword, search_fields)
 
             try:
                 return self.queryset.filter(query).filter(**data).exclude(Q(user__id=self.request.user.id) | Q(user__is_superuser=True)).distinct()
@@ -102,29 +102,6 @@ class UserProfileView(ModelViewSet):
                 raise Exception(e)
         
         return self.queryset.filter(**data).exclude(Q(user__id=self.request.user.id) | Q(user__is_superuser=True)).distinct()
-
-    @staticmethod
-    def get_query(query_string, search_fields):
-        query = None  
-        terms = UserProfileView.normalize_query(query_string)
-        
-        for term in terms:
-            or_query = None 
-            for field_name in search_fields:
-                q = Q(**{"%s__icontains" % field_name: term})
-                if or_query is None:
-                    or_query = q
-                else:
-                    or_query = or_query | q
-            if query is None:
-                query = or_query
-            else:
-                query = query & or_query
-        return query
-    
-    @staticmethod
-    def normalize_query(query_string, findterms=re.compile(r'"([^"]+)"|(\S+)').findall, normspace=re.compile(r'\s{2,}').sub):
-        return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
 
     def update(self, request, *args, **kwargs):
         try:
