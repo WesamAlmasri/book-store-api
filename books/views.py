@@ -21,14 +21,7 @@ class CategoryView(APIView):
 class AutherView(ModelViewSet):
     queryset = Auther.objects.all()
     serializer_class = AutherSerializer
-
-    def get_permissions(self):
-        if self.action == 'update' or 'create' or 'destroy' or 'partial_update':
-            permission_classes = (IsAuthenticatedCustom,)
-        else:
-            permission_classes = ()
-
-        return [permission() for permission in permission_classes]
+    permission_classes = (IsAuthenticatedCustom,)
 
     def create(self, request):
         user = request.user
@@ -59,19 +52,16 @@ class AutherView(ModelViewSet):
             return Response(serializer.data, status=200)
 
         return Response({'error': 'You are not authorized to perform this operation'}, status=401)
+    
+    def destroy(self, request, *args, **kwargs):
+
+        return Response({"error": "You cant delete auther account after creation!"}, status=400)
 
 
 class BookView(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-
-    def get_permissions(self):
-        if self.action == 'update' or 'create' or 'destroy' or 'partial_update':
-            permission_classes = (IsAuthenticatedCustom,)
-        else:
-            permission_classes = ()
-
-        return [permission() for permission in permission_classes]
+    permission_classes = (IsAuthenticatedCustom,)
 
     def get_queryset(self):
 
@@ -129,12 +119,24 @@ class BookView(ModelViewSet):
                 data=request.data, instance=instance, partial=True)
             serializer.is_valid(raise_exception=True)
 
-            if serializer.validated_data['auther_id'] != user.auther_user.id:
+            if serializer.validated_data['auther_id'] != user.user_auther.id:
                 return Response({"error": "You do not own the book to update on!"}, status=400)
 
             serializer.save()
             return Response(serializer.data, status=200)
-        except Exception:
-            return Response({"error": "failed to upload the book"}, status=400)
+        except Exception as e:
+            return Response({"error": "Failed to upload the book"}, status=400)
 
         return Response(serializer.data, status=200)
+
+    def destroy(self, request, *args, **kwargs):
+        user = request.user
+
+        instance = self.get_object()
+
+        if user.user_auther.id != instance.auther.id:
+            return Response({"error": "You do not own this book to delete!"}, status=400)
+        
+        instance.delete()
+
+        return Response({"success": "The book successfully deleted"}, status=200)

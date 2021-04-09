@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter(trailing_slash=False)
 
 router.register('authers', AutherView)
-router.register('books', BookView)
+router.register('book', BookView)
 
 urlpatterns = [
     path('', include(router.urls)),
