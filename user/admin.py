@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, UserProfile, JWT
+from .models import CustomUser, UserProfile, JWT, FileUpload
 
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'is_staff', 'is_active', 'created_at')
@@ -27,3 +27,11 @@ class JwtAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 admin.site.register(JWT, JwtAdmin)
+
+class FileUploadAdmin(admin.ModelAdmin):
+    list_display = ('id', 'file_upload', 'created_at')
+    list_display_links = ('id', 'file_upload')
+    search_fields = ('file_upload',)
+    list_per_page = 25
+
+admin.site.register(FileUpload, FileUploadAdmin)

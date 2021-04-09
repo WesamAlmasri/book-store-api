@@ -13,8 +13,6 @@ class AutherSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BookSerializer(serializers.ModelSerializer):
-    uploaded_by = CustomUserSerializer(read_only=True)
-    uploaded_by_id = serializers.IntegerField(write_only=True)
     auther = AutherSerializer(read_only=True)
     auther_id = serializers.IntegerField(write_only=True)
     category = CategorySerializer(read_only=True)

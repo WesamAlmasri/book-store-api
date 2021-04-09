@@ -11,7 +11,7 @@ class Category(models.Model):
         return self.name
 
 class Auther(models.Model):
-    user = models.OneToOneField(CustomUser, related_name='auther_user', on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, related_name='user_auther', on_delete=models.CASCADE)
     name = models.CharField(max_length=200, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -21,7 +21,6 @@ class Auther(models.Model):
 
 
 class Book(models.Model):
-    uploaded_by = models.OneToOneField(CustomUser, related_name='book_uploader', on_delete=models.CASCADE)
     auther = models.ForeignKey(Auther, related_name='auther_books', on_delete=models.CASCADE)
     category = models.ForeignKey(Category, related_name='category_books', on_delete=models.CASCADE)
     file = models.OneToOneField(FileUpload, related_name='file_book', on_delete=models.CASCADE)
