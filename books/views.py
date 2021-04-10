@@ -55,7 +55,7 @@ class AutherView(ModelViewSet):
     
     def destroy(self, request, *args, **kwargs):
 
-        return Response({"error": "You cant delete auther account after creation!"}, status=400)
+        return Response({"error": "You cant delete auther account after creation, Please contact with the administration!"}, status=400)
 
 
 class BookView(ModelViewSet):
@@ -140,3 +140,8 @@ class BookView(ModelViewSet):
         instance.delete()
 
         return Response({"success": "The book successfully deleted"}, status=200)
+
+class BookImageView(ModelViewSet):
+    queryset = BookImage.objects.all()
+    serializer_class = BookImageSerializer
+    permission_classes = (IsAuthenticatedCustom,)
