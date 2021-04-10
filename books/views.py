@@ -141,7 +141,56 @@ class BookView(ModelViewSet):
 
         return Response({"success": "The book successfully deleted"}, status=200)
 
+
 class BookImageView(ModelViewSet):
     queryset = BookImage.objects.all()
     serializer_class = BookImageSerializer
     permission_classes = (IsAuthenticatedCustom,)
+    
+class BookCommentView(ModelViewSet):
+    queryset = BookComment.objects.all()
+    serializer_class = BookCommentSerializer
+    permission_classes = (IsAuthenticatedCustom,)
+
+    def create(self, request):
+        user = request.user
+
+        serializer = self.serializer_class(
+            data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        if serializer.validated_data['user_id'] != user.id:
+            return Response({"error": "Something Went Wrong"}, status=400)
+        
+        book = Book.objects.get(id=serializer.validated_data['book_id'])
+
+        if user.user_auther and book.auther.id == user.user_auther.id:
+            return Response({"error": "You cannot comment on your books!"}, status=400)
+
+        serializer.save()
+        return Response(serializer.data, status=200)    
+
+    def update(self, request, *args, **kwargs):
+        try:
+            request.data._mutable = True
+        except:
+            pass
+
+        user = request.user
+
+        instance = self.get_object()
+
+        serializer = self.serializer_class(
+            data=request.data, instance=instance, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        if serializer.validated_data['user_id'] != user.id:
+            return Response({"error": "Something Went Wrong!"}, status=400)
+        
+        if user.user_auther and instance.book.auther.id == user.user_auther.id:
+            return Response({"error": "You cannot comment on your books!"}, status=400)
+
+        serializer.save()
+        return Response(serializer.data, status=200)
+
+        return Response(serializer.data, status=200)

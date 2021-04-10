@@ -42,4 +42,4 @@ class BookCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookComment
-        dields = '__all__'
+        fields = '__all__'
