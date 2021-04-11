@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.views import exception_handler
 from django.utils import timezone
@@ -21,6 +21,33 @@ class IsAuthenticatedCustom(BasePermission):
             return True
         
         return False
+
+class IsOwnerOrReadOnly(BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+    
+        if request.method in SAFE_METHODS:
+            return True
+
+        return obj.user == request.user
+
+class IsAutherBookOrReadOnly(BasePermission):
+    
+    def has_object_permission(self, request, view, obj):
+    
+        if request.method in SAFE_METHODS:
+            return True
+
+        return obj.auther.user == request.user
+
+class IsImageOwnerOrReadOnly(BasePermission):
+    
+    def has_object_permission(self, request, view, obj):
+    
+        if request.method in SAFE_METHODS:
+            return True
+
+        return obj.book.auther.user == request.user
         
 def custom_exception_handler(exc, context):
 

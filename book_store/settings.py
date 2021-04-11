@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
     # internal
     'user.apps.UserConfig',
-    'books.apps.BooksConfig',
+    'store.apps.StoreConfig',
 
     # 3rd party
     'rest_framework',
