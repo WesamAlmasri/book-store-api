@@ -96,7 +96,7 @@ class BookView(ModelViewSet):
             return Response({"error": "Something Went Wrong"}, status=400)
 
         serializer.save()
-        return Response(serializer.data, status=200)
+        return Response(serializer.data, status=201)
 
     def update(self, request, *args, **kwargs):
         try:
