@@ -102,16 +102,63 @@ class TestBookInfo(APITestCase):
         self.assertEqual(result['user']['id'], 1)
     
     def test_delete_auther(self):
-        data = {
-            'name': 'Auther1',
-        }
     
-        response = self.client.post(self.authers_url, data, **self.auth_header)
+        response = self.client.post(self.authers_url, {'name': 'Auther1',}, **self.auth_header)
         result = response.json()
 
-        response = self.client.delete(f"{self.authers_url}/{result['id']}", data, **self.auth_header)
+        response = self.client.delete(f"{self.authers_url}/{result['id']}", **self.auth_header)
         result = response.json()
 
         self.assertEqual(response.status_code, 400)
         self.assertIsNotNone(result['error'])
     
+    def test_post_create_book(self):
+        self.client.post(self.authers_url, {'name': 'Auther1'}, **self.auth_header)
+
+        data = {
+            'auther_id': 1,
+            'category_id': 2,
+            'file_id': 1,
+            'title': 'jordan in 2021',
+            'pages': 65,
+            'description': 'desc',
+        }
+    
+        response = self.client.post(self.book_url, data, **self.auth_header)
+        result = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(result['id'], 1)
+        self.assertEqual(result['auther']['id'], 1)
+        self.assertEqual(result['category']['id'], 2)
+        self.assertEqual(result['file']['id'], 1)
+        self.assertEqual(result['title'], 'jordan in 2021')
+        self.assertEqual(result['pages'], 65)
+        self.assertEqual(result['description'], 'desc')
+
+    def test_get_book(self):
+        self.client.post(self.authers_url, {'name': 'Auther1'}, **self.auth_header)
+
+        data = {
+            'auther_id': 1,
+            'category_id': 2,
+            'file_id': 1,
+            'title': 'jordan in 2021',
+            'pages': 65,
+            'description': 'desc',
+        }
+    
+        response = self.client.post(self.book_url, data, **self.auth_header)
+        result = response.json()
+
+        response = self.client.get(f"{self.book_url}/{result['id']}", **self.auth_header)
+        result = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(result['id'], 1)
+        self.assertEqual(result['auther']['id'], 1)
+        self.assertEqual(result['category']['id'], 2)
+        self.assertEqual(result['file']['id'], 1)
+        self.assertEqual(result['title'], 'jordan in 2021')
+        self.assertEqual(result['pages'], 65)
+        self.assertEqual(result['description'], 'desc')
