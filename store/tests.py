@@ -67,4 +67,51 @@ class TestBookInfo(APITestCase):
         self.assertEqual(result[0]['name'], 'Electronics')
         self.assertEqual(result[2]['id'], 3)
         self.assertEqual(result[2]['name'], 'Math')
-        
+    
+    def test_post_create_auther(self):
+        data = {
+            'name': 'Auther1',
+        }
+    
+        response = self.client.post(self.authers_url, data, **self.auth_header)
+        result = response.json()
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result['id'], 1)
+        self.assertEqual(result['name'], 'Auther1')
+        self.assertEqual(result['user']['id'], 1)
+
+    def test_put_update_auther(self):
+        data = {
+            'name': 'Auther1',
+        }
+    
+        response = self.client.post(self.authers_url, data, **self.auth_header)
+        result = response.json()
+
+        data = {
+            'name': 'Auther11',
+        }
+    
+        response = self.client.put(f"{self.authers_url}/{result['id']}", data, **self.auth_header)
+        result = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(result['id'], 1)
+        self.assertEqual(result['name'], 'Auther11')
+        self.assertEqual(result['user']['id'], 1)
+    
+    def test_delete_auther(self):
+        data = {
+            'name': 'Auther1',
+        }
+    
+        response = self.client.post(self.authers_url, data, **self.auth_header)
+        result = response.json()
+
+        response = self.client.delete(f"{self.authers_url}/{result['id']}", data, **self.auth_header)
+        result = response.json()
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIsNotNone(result['error'])
+    
