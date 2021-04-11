@@ -130,7 +130,7 @@ class TestUserInfo(APITestCase):
         result = response.json()
 
         self.auth_header = {
-            'HTTP_AUTHORIZATION': 'jocobr {}'.format(result['access'])
+            'HTTP_AUTHORIZATION': 'Bearer {}'.format(result['access'])
         }
     
     def test_post_user_profile(self):
