@@ -96,16 +96,15 @@ The users can make an author's account to have the ability to share their own bo
 | GET    | `/book-comment/:id` | Get a comment to a book               |
 | DELTE  | `/book-comment/:id` | Deletea comment to a book with the id |
 
-
 ## Test
 
 ![app test](assets/test-book-app.gif)
 
 ## Technology
 
-![pyrhon](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtwnzP2fYIjyo3H0qZJWAkC98HxxirQm-xQ&usqp=CAU))
+![python](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtwnzP2fYIjyo3H0qZJWAkC98HxxirQm-xQ&usqp=CAU))
 
-![django]((https://www.fullstackpython.com/img/logos/django.png))
+![django](https://www.fullstackpython.com/img/logos/django.png)
 
 ![django rest framework](https://www.django-rest-framework.org/img/logo.png)
 
