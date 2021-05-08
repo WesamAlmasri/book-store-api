@@ -116,16 +116,16 @@ class UserProfileView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        if file_upload:
-            try:
-                file_ = FileUpload.objects.create(**file_upload)
-                profile = self.get_object()
-                profile.profile_picture = file_
-                profile.save()
-                profile = self.get_object()
-                return Response(self.serializer_class(profile).data, status=200)
-            except Exception:
-                return Response({"error": "failed to upload profile picture"}, status=400)
+        # if file_upload:
+        #     try:
+        #         file_ = FileUpload.objects.create(**file_upload)
+        #         profile = self.get_object()
+        #         profile.profile_picture = file_
+        #         profile.save()
+        #         profile = self.get_object()
+        #         return Response(self.serializer_class(profile).data, status=200)
+        #     except Exception:
+        #         return Response({"error": "failed to upload profile picture"}, status=400)
         
         return Response(serializer.data, status=200)
 

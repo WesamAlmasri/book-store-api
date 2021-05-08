@@ -92,8 +92,6 @@ class BookView(ModelViewSet):
             data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        if serializer.validated_data['auther_id'] != user.user_auther.id:
-            return Response({"error": "Something Went Wrong"}, status=400)
 
         serializer.save()
         return Response(serializer.data, status=201)
