@@ -21,6 +21,8 @@ The users can make an author's account to have the ability to share their own bo
 
 ## Database Model Diagram
 
+![Database Model Diagram](assets/models.png)
+
 ## Features & Routes
 
 ### Users and Profile
@@ -109,5 +111,3 @@ The users can make an author's account to have the ability to share their own bo
 ![django rest framework](https://www.django-rest-framework.org/img/logo.png)
 
 ![amazon s3](https://miro.medium.com/max/640/1*B9CIOrxdROHvtdmouQA1_A.png)
-
-![app test](assets/test-book-app.gif)
