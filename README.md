@@ -16,7 +16,7 @@ The users can make an author's account to have the ability to share their own bo
     - `DEBUG = True`: Debug mode.
     - `SECRET_KEY="App secret key"`
     - `S3_BUCKET_URL`, `AWS_S3_ACCESS_KEY_ID`, `AWS_S3_SECRET_ACCESS_KEY`, `AWS_STORAGE_BUCKET_NAME`, `AWS_HOST_REGION` From your S3 AWS account.
-4. Create a super user by running this command to the terminal `python manage.pu createsuperuser`, it will ask you for a username and password.
+4. Create a super user by running this command to the terminal `python manage.py createsuperuser`, it will ask you for a username and password.
 5. Run the server by entering the command `python manage.py runserver`.
 
 ## Database Model Diagram
